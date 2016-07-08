@@ -1,28 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';/
 
-import LyftButton from './components/lyftButton';
+// REMOVED import App from './components/app' -  app is rendered in seperate location due to react-router replacing it.
+import { Router, browserHistory } from 'react-router';
+//browserHistory - things after / 
+//hashHistory - things after #
+// import reducers from './reducers';
+import routes from './routes';
+// import promise from 'redux-promise';
 
+const createStoreWithMiddleware = applyMiddleware(
+	promise
+)(createStore);
 
-
-const uberAuthorizeUri = 'https://login.uber.com/oauth/v2/authorize?response_type=code&client_id='+uberClientId
-
-const lyftAuthorizeUri = 'https://www.lyft.com/oauth/authorize?scope=rides.read&response_type=code&state=true&client_id='+lyftClientId; 
-
-class App extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = { history: [] };
-	} 
-	
-	render() {
-		return (
-			<div> 
-				<LyftButton />
-			</div> 
-		)
-	}	
-}
-
-ReactDOM.render(<App />, document.querySelector('.container'));
+ReactDOM.render(
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <Router history={browserHistory} routes={routes}/>
+  </Provider>
+  , document.querySelector('.container'));
