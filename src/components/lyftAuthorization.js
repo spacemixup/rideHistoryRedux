@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { getLyftAuth } from '../actions/index.js';
+import { Link } from 'react-router';
+import {browserHistory} from 'react-router';
 import axios from 'axios';
+import LyftButton from './lyftButton';
 
-var lyftClientId = '76w9JwuMxobz';
-var lyftClientSecret = '0dHw3FIhpOGVc4Bv7agROzU46uSi8O5p';
-var lyftAuthorizationCodeUri = window.location.href
-var lyftAuthorizationCode = lyftAuthorizationCodeUri.substring(lyftAuthorizationCodeUri.indexOf('=')+1, lyftAuthorizationCodeUri.indexOf('=')+17);
 
-var lyftTokenUri = 'https://api.lyft.com/oauth/token';
-var lyftApiHistoryUrl = 'https://api.lyft.com/v1/rides';
 
 
 class LyftAuthorization extends Component {
 
+	constructor(props) {
+		super(props);
 
-	getLyftAccessTokenRequest() {
+		this.state = { 
+			lyftAccessToken: ''
+		}
+	}
+
+	getLyftAccessToken(lyftAuthorizationCode) {
+		
+		let lyftAuthCode;
+
 		axios({
 			method: 'post',
 			url: lyftTokenUri,
@@ -26,29 +35,33 @@ class LyftAuthorization extends Component {
 			}
 		})
 		.then(function(response) {
-			lyftAccessToken = response.access_token;
-			lyftRefreshToken = response.refresh_token;
 			console.log(response)
+			sessionStorage.setItem('lyftAccessToken', response.data.access_token);
+			browserHistory.push('/history')
 		})
 		.catch(function (err) {
 				console.log(err)
 		});
-	};
-	
-	render() {
-		
-		var lyftHistory = [];
-		var lyftParsed = [];
-		var temp;
+	}
 
-			return ( 
-				<div>
-					<LyftButton />
-				</div>
-			)
-		}
+	//getLyftAccessToken.then go to next page.
+
+	render() {
+		const lyftAuthorizationCodeUri = window.location.href;
+		const lyftAuthorizationCode = lyftAuthorizationCodeUri.substring(lyftAuthorizationCodeUri.indexOf('=')+1, lyftAuthorizationCodeUri.indexOf('=')+17);
+		this.getLyftAccessToken(lyftAuthorizationCode)
+	
+		return (
+			<div>
+				<h1>authenticating..</h1>
+			</div>
+		)
+	}
 }
 
+function mapStateToProps(state) {
+	return { auth: state };
+}
 
+export default connect(mapStateToProps, { getLyftAuth })(LyftAuthorization);
 
-export default LyftAuthorization;

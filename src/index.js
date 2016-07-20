@@ -1,19 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';/
-
-// REMOVED import App from './components/app' -  app is rendered in seperate location due to react-router replacing it.
+import { createStore, applyMiddleware } from 'redux';
 import { Router, browserHistory } from 'react-router';
-//browserHistory - things after / 
-//hashHistory - things after #
-// import reducers from './reducers';
+import reducers from './reducers';
 import routes from './routes';
-// import promise from 'redux-promise';
+import thunk from 'redux-thunk';
+import promise from 'redux-promise';
+import createLogger from 'redux-logger';
 
-const createStoreWithMiddleware = applyMiddleware(
-	promise
-)(createStore);
+const logger = createLogger();
+
+const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>

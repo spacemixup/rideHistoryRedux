@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchAuth } from '../actions/index.js';
 import { Link } from 'react-router';
+import LyftButton from './lyftButton';
 
 class LyftLogin extends Component { 
-	componentWillMount() {
-		this.props.fetchAuth();
-	}
 	render() {
 		return (
 			<LyftButton />
@@ -14,8 +12,4 @@ class LyftLogin extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return { posts: state.posts.all };
-}
-
-export default connect(mapStateToProps, { fetchAuth })(LyftLogin);
+export default LyftLogin;
