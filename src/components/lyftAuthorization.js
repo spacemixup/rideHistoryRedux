@@ -8,7 +8,6 @@ import LyftButton from './lyftButton';
 
 
 
-
 class LyftAuthorization extends Component {
 
 	constructor(props) {
