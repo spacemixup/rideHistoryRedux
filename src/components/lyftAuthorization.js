@@ -1,22 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getLyftAuth } from '../actions/index.js';
-import { Link } from 'react-router';
-import {browserHistory} from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import axios from 'axios';
+
 import LyftButton from './lyftButton';
+import { getLyftAuth } from '../actions/index.js';
 
 
 
-class LyftAuthorization extends Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = { 
-			lyftAccessToken: ''
-		}
-	}
+export default class LyftAuthorization extends Component {
 
 	getLyftAccessToken(lyftAuthorizationCode) {
 		
@@ -36,7 +29,7 @@ class LyftAuthorization extends Component {
 		.then(function(response) {
 			console.log(response)
 			sessionStorage.setItem('lyftAccessToken', response.data.access_token);
-			browserHistory.push('/history')
+			browserHistory.push('/main')
 		})
 		.catch(function (err) {
 				console.log(err)
@@ -57,10 +50,4 @@ class LyftAuthorization extends Component {
 		)
 	}
 }
-
-function mapStateToProps(state) {
-	return { auth: state };
-}
-
-export default connect(mapStateToProps, { getLyftAuth })(LyftAuthorization);
 

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
 class LyftAuthButton extends Component { 
-
-
 	render() {
 		return ( 
 			<div>

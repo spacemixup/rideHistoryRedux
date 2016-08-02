@@ -3,7 +3,8 @@ import { creatStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import rootReducer from '../reducers/index';
 
-export const FETCH_LYFT_HIST = 'FETCH_LYFT_HIST';
+export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
+export const SELECT_HISTORY = 'SELECT_HISTORY';
 
 const lyftTokenUri = 'https://api.lyft.com/oauth/token';
 const lyftApiHistoryUrl = 'https://api.lyft.com/v1/rides';
@@ -22,46 +23,8 @@ function parseLyftHistory(array) {
 	let lyftParsed = [];
 
 	for (var i=0; i<array.length; i++) {
-		// //if lyft cancelled
-		// if (array[i].canceled_by === "driver") {
-		// 	var cancelRide = {
-		// 		price: array[i].price.amount,
-		// 		requestedAt: array[i].requested_at,
-		// 		location: array[i].origin.address,
-		// 		destination: array[i].destination.address,
-		// 		driver: {
-		// 			name: array[i].driver.first_name,
-		// 			lat: array[i].driver.lat,
-		// 			lng: array[i].driver.lng,
-		// 			rating: array[i].driver.rating,
-		// 		},
-		// 		vehicle: {
-		// 			color: array[i].vehicle.color,
-		// 			make: array[i].vehicle.make,
-		// 			model: array[i].vehicle.model,
-		// 			year: array[i].vehicle.year
-		// 		},
-		// 		// destination: array[i].destintion.address,
-		// 		rideType: array[i].ride_type,
-		// 		rideId: array[i].ride_id
-		// 	};
-		// 	lyftParsed.push(cancelRide);
-
-		// } if (array[i].canceled_by === "passenger") {
-		// 	var cancelRide = {
-		// 		price: array[i].price.amount,
-		// 		requestedAt: array[i].requested_at,
-		// 		location: {
-		// 			lat: array[i].origin.address.lat,
-		// 			lng: array[i].origin.address.lng
-		// 		},
-		// 		rideType: array[i].ride_type,
-		// 		rideId: ride_id
-		// 	};
-		// 	lyftParsed.push(cancelRide);
-		// } 
+		
 		if (array[i].status==='droppedOff') {
-			console.log(array[i].requested_at)
 			var historyData = {
 				ride_id: array[i].ride_id,
 				ride_type: array[i].ride_type,
@@ -96,30 +59,8 @@ function parseLyftHistory(array) {
 	return lyftParsed
 };
 
-function allCancel(array) {
-	for (var i=0; i<array.length; i++) {
-		if (array[i].canceled_by) {
-			lyftCancel.push(array[i])
-		}
-	}
-}
 
-// export function fetchLyftHist() {
-
-// 	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken')
-// 	const request = axios({
-// 										method: 'GET',
-// 										url: lyftApiHistoryUrl+'?start_time=2015-01-01T00:00:00Z&limit=50',
-// 										headers: {
-// 											Authorization: 'Bearer '+ lyftAccessToken
-// 										}
-// 									})
-
-// 	return { type: FETCH_LYFT_HIST, payload: request }
-			
-// }
-
-export function fetchLyftHist() {
+export function fetchLyftHistory() {
 		const lyftAccessToken = sessionStorage.getItem('lyftAccessToken')
 		const request = axios({
 										method: 'GET',
@@ -133,15 +74,22 @@ export function fetchLyftHist() {
 				let convertedArray = makeHistoryArray(response)
 				let parsedHistory = parseLyftHistory(convertedArray)
 		
-				return payload(parsedHistory)
-				
+				return payload(FETCH_LYFT_HISTORY,parsedHistory)	
 			});
 };
 
+export function selectHistory(selectedHistory) {
+	
+	return payload(SELECT_HISTORY,selectedHistory)
+};
 
-function payload(request) {
-	return { type: FETCH_LYFT_HIST, payload: request }
-}
+
+function payload(type,request) {
+	return { 
+		type: type, 
+		payload: request 
+	}
+};
 
 
 

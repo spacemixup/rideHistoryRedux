@@ -8,8 +8,8 @@ class LyftLogin extends Component {
 	render() {
 		return (
 			<LyftButton />
-		)
-	}
-}
+		);
+	};
+};
 
 export default LyftLogin;
