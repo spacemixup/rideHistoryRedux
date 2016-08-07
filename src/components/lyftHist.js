@@ -27,6 +27,8 @@ const LyftHist = (props) =>  {
 					<th>Time Picked Up</th>
 					<th>Pick up Location</th>
 					<th>Drop Off Location</th>
+					<th>Ride Cost</th>
+					<th>Ride Original Cost</th>
 					<th>Ride Type</th>
 				</tr>
 			</thead>

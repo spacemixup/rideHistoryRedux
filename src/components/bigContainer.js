@@ -24,21 +24,21 @@ class BigContainer extends Component {
       var data = this.props.selectedHistory
       if (data) {
 
-        let start = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-start.png')
-        let end = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-end.png')
+        let startIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-start.png')
+        let endIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-end.png')
 
         return [
           {
             defaultAnimation:2,
-            key: Date.now(),
+            key: this.props.ride_id+'pickup',
             position: this.props.marker.originLatLng,
-            icon: start
+            icon: startIcon
           },
           {
             defaultAnimation:2,
-            key: this.props.ride_id,
+            key: this.props.ride_id+'dropoff',
             position: this.props.marker.dropoffLatLng,
-            icon: end
+            icon: endIcon
           }  
         ];
       } else {
@@ -78,18 +78,15 @@ class BigContainer extends Component {
     } 
   }
   
-
 	render() {
     return (
 			<div className="container">	
 				<div className="mainMap">
 					<BigMap
             selectedHistory = {this.props.selectedHistory}
-						defaultZoom = {13}
+						defaultZoom = {14}
 						defaultCenter = {this.center()}
 						markers={this.markerArray()}
-        	
-            
 					/>
 				</div>
 				<div className="lyftHist">

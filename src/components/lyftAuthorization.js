@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
 import axios from 'axios';
-
 import LyftButton from './lyftButton';
 import { getLyftAuth } from '../actions/index.js';
-
+import { lyftClientId, lyftClientSecret, lyftTokenUri, lyftApiHistoryUrl }  from './keys.js'
 
 
 export default class LyftAuthorization extends Component {

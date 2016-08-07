@@ -3,12 +3,12 @@ import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import rootReducer from '../reducers/index';
 import moment from 'moment';
+import { lyftTokenUri, lyftApiHistoryUrl } from '../components/keys';
 
 export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
 export const SELECT_HISTORY = 'SELECT_HISTORY';
 
-const lyftTokenUri = 'https://api.lyft.com/oauth/token';
-const lyftApiHistoryUrl = 'https://api.lyft.com/v1/rides';
+
 
 // axios.interceptors.request.use(function(config) {
 // 			setTimeout(function(){}, 4000);
@@ -194,64 +194,60 @@ export function fetchLyftHistory() {
 // };
 
 //no endTime
-export function fetchLyftHistory() {
+// export function fetchLyftHistory() {
 		
-	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
-	const origin = '2015-01-01T00:00:00Z';
+// 	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
+// 	const origin = '2015-01-01T00:00:00Z';
 
-	let parsedHistory = [];
-	let counter = 0;	
+// 	let parsedHistory = [];
+// 	let counter = 0;	
 		
-	let request = function(startTime, endTime) {
-		//must convert because lyft api request requires ISO 8601 UTC, but passes back ISO 8601 local;
-
-		let noEndTime = 
+// 	let request = function(startTime) {
+// 		//must convert because lyft api request requires ISO 8601 UTC, but passes back ISO 8601 local;
+// 		let parsedStart = moment(startTime).format();
 		
-		endTime =  endtime || noEndTime
+// 		const a = axios({
+// 								method: 'GET',
+// 								url: lyftApiHistoryUrl+'?start_time='+parsedStart+'&limit=50',
+// 								headers: {
+// 								Authorization: 'Bearer '+ lyftAccessToken
+// 								}
+// 							});
 
-		let parsedStart = moment(startTime).format();
-		
-		const a = axios({
-								method: 'GET',
-								url: lyftApiHistoryUrl+'?start_time='+parsedStart+endTime+'&limit=50',
-								headers: {
-								Authorization: 'Bearer '+ lyftAccessToken
-								}
-							});
+// 		// setTimeout(function(a) {console.log(a); return a}, 5000);
+// 		return a;
+// 	} 
 
-		// setTimeout(function(a) {console.log(a); return a}, 5000);
-		return a;
-	} 
-
-	function makeRequest(callback, startTime) {
-		return delay(10000)
-			.then(() => {
-				return callback(startTime)
-			.then( response => {
+// 	function makeRequest(callback, startTime) {
+// 		return delay(10000)
+// 			.then(() => {
+// 				return callback(startTime)
+// 			.then( response => {
 			
-				let convertedArray = convertHistoryObjToArray(response);
-				let parsedLyftHistory = parseLyftHistory(convertedArray);
+// 				let convertedArray = convertHistoryObjToArray(response);
+// 				let parsedLyftHistory = parseLyftHistory(convertedArray);
 				
-				if (parsedLyftHistory.length != 0) {
-		 			let lastLyftRideTime = parsedLyftHistory[parsedLyftHistory.length-1].requested_at;	
-					parsedHistory = parsedHistory.concat(parsedLyftHistory)			
-					if (convertedArray.length === 50) {
-						// counter++
-						// if (counter === 3) {
-						// 	alert("hit 3")
-						// 	return payload(FETCH_LYFT_HISTORY,parsedHistory);	
-						// }
-					 //recurse
-					 return makeRequest(callback, lastLyftRideTime);
-					}	
-				} 
-				//return variable
-				return payload(FETCH_LYFT_HISTORY,parsedHistory);	
-			});
-		});
-	};	
-	return makeRequest(request, origin);
-};
+// 				if (parsedLyftHistory.length != 0) {
+// 		 			let lastLyftRideTime = parsedLyftHistory[parsedLyftHistory.length-1].requested_at;	
+// 					parsedHistory = parsedHistory.concat(parsedLyftHistory)			
+// 					if (convertedArray.length === 50) {
+// 						// counter++
+// 						// if (counter === 3) {
+// 						// 	alert("hit 3")
+// 						// 	return payload(FETCH_LYFT_HISTORY,parsedHistory);	
+// 						// }
+// 					 //recurse
+// 					 return makeRequest(callback, lastLyftRideTime);
+// 					}	
+// 				} 
+// 				//return variable
+// 				parsedHistory.reverse();
+// 				return payload(FETCH_LYFT_HISTORY,parsedHistory);	
+// 			});
+// 		});
+// 	};	
+// 	return makeRequest(request, origin);
+// };
 
 
 	let currentTime = moment().format();

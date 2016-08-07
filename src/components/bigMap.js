@@ -44,7 +44,9 @@ import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 // export default BigMap;
 
 const BigMap = (props) =>  {
-	
+		console.log("props", props)
+		
+
 			return (
 			<section style={{ height: `100%` }}>	
 					<GoogleMapLoader
@@ -59,22 +61,36 @@ const BigMap = (props) =>  {
 						}
 						googleMapElement={
 							<GoogleMap
-								ref={googleMap => {
-									if (!googleMap) {
+								ref={ map => {
+									if (!map) {
 										return;
 									} 
-									console.log("gmap",googleMap.props.map);
+									console.log("map",map);
+									if (map.getBounds() && props.markers.length > 0) {
+										
+										console.log("latlng",props.markers[0].position, props.markers[1].position)
+										let bounds = new google.maps.LatLngBounds()
+										bounds.extend(new google.maps.LatLng(props.markers[0].position))
+										bounds.extend(new google.maps.LatLng(props.markers[1].position))
+										map.fitBounds(bounds);
+										console.log(map.props.map.zoom)
+									}
 								}}
 								defaultZoom={props.defaultZoom}
 								defaultCenter={props.defaultCenter}
-								
 							>
-							{props.markers.map((marker, index) => (
-            		<Marker
+							
+							{props.markers.map((marker, index) => {
+            		console.log("marker pos", marker.position)
+
+
+            		return (
+            			<Marker
               		{...marker}
             		/>
-          		))}
-        		</GoogleMap>						
+            		);
+          		})}
+        			</GoogleMap>						
 						}
 					/>
 			</section>
