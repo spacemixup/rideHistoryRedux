@@ -8,7 +8,6 @@ import { getLyftAuth } from '../actions/index.js';
 
 
 
-
 export default class LyftAuthorization extends Component {
 
 	getLyftAccessToken(lyftAuthorizationCode) {

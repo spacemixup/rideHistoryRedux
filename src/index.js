@@ -12,7 +12,6 @@ import {GoogleMap} from 'react-google-maps';
 
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);
-
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <Router history={browserHistory} routes={routes}/>
