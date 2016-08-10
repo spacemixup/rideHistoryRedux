@@ -3,19 +3,19 @@ import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 import { connect } from 'react-redux';
 import { fetchLyftHistory, selectHistory } from '../actions/index.js';
 import { default as update } from "react-addons-update";
-
 import LyftHist from './lyftHist';
 import BigMap from './BigMap';
+import DrawPathButtons from './drawPathButtons';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 class BigContainer extends Component {
-	
-
+  //make sure there's initial history - pulls the 
 	componentWillMount() {
-		this.props.fetchLyftHistory()
+		this.props.fetchLyftHistory();
 	};
 
 	onHistorySelect(selectedHistory) {
-		this.props.selectHistory(selectedHistory)
+		this.props.selectHistory(selectedHistory);
 	}; 
   
   markerArray() {    
@@ -46,7 +46,7 @@ class BigContainer extends Component {
       }
   };
 
-  center() {
+  setCenter() {
     var data = this.props.selectedHistory
     if (data) {
       return {
@@ -61,45 +61,32 @@ class BigContainer extends Component {
     }
   };
 
-  fitBounds() {
-    var data = this.props.selectedHistory
-    if (data) {
-      
-      var bounds = new google.maps.LatLngBounds()
-      let start = new google.maps.LatLng(this.props.marker.originLatLng.lat, this.props.marker.originLatLng.lng)
-      let end = new google.maps.LatLng(this.props.marker.dropoffLatLng.lat, this.props.marker.dropoffLatLng.lng)
-      bounds.extend(start);
-      bounds.extend(end);
-      
-      return bounds;
-    } else {  
-      var bounds = new google.maps.LatLngBounds();
-      return bounds;
-    } 
-  }
-  
 	render() {
     return (
-			<div className="container">	
+			<div className="bigContainer">	
 				<div className="mainMap">
 					<BigMap
             selectedHistory = {this.props.selectedHistory}
 						defaultZoom = {14}
-						defaultCenter = {this.center()}
+						defaultCenter = {this.setCenter()}
 						markers={this.markerArray()}
 					/>
 				</div>
-				<div className="lyftHist">
-					<LyftHist 
+        <div className="requestButtons">
+          <drawPathButtons />
+        </div>
+        <div className="lyftHist">
+          <Scrollbars style={{ width: '100%', height: '50vw' }}>
+          <LyftHist 
 						history = {this.props.history}
 						onHistorySelect = {selectedHistory => this.onHistorySelect(selectedHistory)}
 					/>
+          </Scrollbars>
 				</div>
 			</div>
-
-		)
-	}
-}
+		);
+	};
+};
 
 function mapStateToProps(state) {
 	return { 

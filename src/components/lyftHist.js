@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchLyftHistory, selectHistory } from '../actions/index.js';
-import datejs from 'datejs';
-import LyftHistItem from './lyftHistItem'
+import LyftHistItem from './lyftHistItem';
+import moment from 'moment';
+
 
 const LyftHist = (props) =>  {
 	if (!props.history[0]) {
 		return <div> Loading...</div>
 	};
 		
-	const histItem = props.history.map((ride) => {	
+	const histItem = props.history.map((ride, index) => {	
 		return (
 			<LyftHistItem 
 				onRowSelect={props.onHistorySelect}
@@ -23,12 +24,12 @@ const LyftHist = (props) =>  {
 		<table className="table table-hover small" style={{fontSize:'6px'}} >
 			<thead>	
 				<tr>
-					<th>Time Requested</th>
 					<th>Time Picked Up</th>
+					<th>Time Dropped Off</th>
 					<th>Pick up Location</th>
 					<th>Drop Off Location</th>
 					<th>Ride Cost</th>
-					<th>Ride Original Cost</th>
+					<th>Ride Cost</th>
 					<th>Ride Type</th>
 				</tr>
 			</thead>
