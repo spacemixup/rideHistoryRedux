@@ -75,60 +75,80 @@ function parseLyftHistory(array) {
 
 export function fetchLyftHistory() {
 	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
-	let xratelimit = 5;	
 
-	let parsedHistoryArray = [];
-	
-		
-	let request = function(startTime) {
-		//must convert because lyft api request requires ISO 8601 UTC, but passes back ISO 8601 local;
-		xratelimit --;
-		let parsedStart = moment(startTime).format();
+	const request = axios({
+		method: 'GET', 
+		url: 'http://localhost:8080/API/'+lyftAccessToken
+	});
 
-		const a = axios({
-								method: 'GET',
-								url: lyftApiHistoryUrl+'?start_time='+parsedStart+'&limit=50',
-								headers: {
-								Authorization: 'Bearer '+ lyftAccessToken
-								}
-							});
+	return request
+				 .then((response) => {
+				 	return payload(FETCH_LYFT_HISTORY,response.data)
+				 });
 
-		return a;
-	}; 
-	
-	let lastLyftRideTimePlusOneSec;
-	let earliestRideTimeMinusOneSec;
-
-	function makeRequest(action, startTime) {
-		return action(startTime)
-		.then( response => {
-			console.log(response);
-			let convertedArray = convertHistoryObjToArray(response);
-			let parsedLyftHistory = parseLyftHistory(convertedArray);
-			parsedHistoryArray = parsedHistoryArray.concat(parsedLyftHistory);
-			//get earliest ride time from the parsed response
-			if (xratelimit === 0 || parsedLyftHistory.length === 0) {
-				//find out when the rate limit resets
-				console.log("x-ratelimit-reset", moment(response.headers.x_ratelimit_reset)._d)
-				//calculate the last array for call when it's available
-				earliestRideTimeMinusOneSec = moment(parsedHistoryArray[0].requested_at).subtract(1, 's')._i;
-				console.log("earliestRideTimeMinusOneSec", earliestRideTimeMinusOneSec);
-				parsedHistoryArray.reverse()
-				return payload(FETCH_LYFT_HISTORY,parsedHistoryArray);		 
-			};
-			//take the last item in array (most recent) convert the time + 1 secnd
-			function calculateLastRideTimePlusOneSec(array) {
-				let lastLyftRideTime = array[array.length-1].requested_at;
-				lastLyftRideTimePlusOneSec = moment(lastLyftRideTime).add(1, 's');
-			}
-			calculateLastRideTimePlusOneSec(parsedHistoryArray);
-			//call again starting at one second earlier than the parsed response
-			return makeRequest(action, lastLyftRideTimePlusOneSec)	
-		});
-	};
-	return makeRequest(request, fiveMonthsAgo);
 };
 
+// export function fetchLyftHistory() {
+// 	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
+
+// 	console.log("lyftAccessToken", lyftAccessToken);
+
+// 	let xratelimit = 5;	
+// 	let parsedHistoryArray = [];
+	
+// 	let request = function(startTime) {
+// 		//must convert because lyft api request requires ISO 8601 UTC, but passes back ISO 8601 local;
+// 		xratelimit --;
+// 		let parsedStart = moment(startTime).format();
+// 		const a = axios({
+// 								method: 'GET',
+// 								url: lyftApiHistoryUrl+'?start_time='+parsedStart+'&limit=50',
+// 								headers: {
+// 								Authorization: 'Bearer '+ lyftAccessToken
+// 								}
+// 							});
+
+// 		return a;
+// 	}; 
+	
+// 	let lastLyftRideTimePlusOneSec;
+// 	let earliestRideTimeMinusOneSec;
+
+// 	function makeRequest(action, startTime) {
+// 		return action(startTime)
+// 		.then( response => {
+// 			console.log(response);
+// 			let convertedArray = convertHistoryObjToArray(response);
+// 			let parsedLyftHistory = parseLyftHistory(convertedArray);
+// 			parsedHistoryArray = parsedHistoryArray.concat(parsedLyftHistory);
+// 			//get earliest ride time from the parsed response
+// 			if (xratelimit === 0 || parsedLyftHistory.length === 0) {
+// 				//find out when the rate limit resets
+				
+// 				var now = moment();
+// 				var x_rate_limit_reset = moment(response.headers.x_ratelimit_reset);
+// 				//calculate how soon the x-ratelimit resets
+// 				console.log("seconds til x-ratelimit-reset", x_rate_limit_reset.diff(now, 'seconds'))
+
+// 				// console.log("x-ratelimit-reset", moment(response.headers.x_ratelimit_reset)._d)
+// 				//calculate the last array for call when it's available
+// 				earliestRideTimeMinusOneSec = moment(parsedHistoryArray[0].requested_at).subtract(1, 's')._i;
+// 				console.log("earliestRideTimeMinusOneSec", earliestRideTimeMinusOneSec);
+// 				parsedHistoryArray.reverse()
+// 				return payload(FETCH_LYFT_HISTORY,parsedHistoryArray);		 
+// 			};
+// 			//take the last item in array (most recent) convert the time + 1 secnd
+// 			function calculateLastRideTimePlusOneSec(array) {
+// 				let lastLyftRideTime = array[array.length-1].requested_at;
+// 				lastLyftRideTimePlusOneSec = moment(lastLyftRideTime).add(1, 's');
+// 			}
+// 			calculateLastRideTimePlusOneSec(parsedHistoryArray);
+// 			//call again starting at one second earlier than the parsed response
+// 			return makeRequest(action, lastLyftRideTimePlusOneSec)	
+// 		});
+// 	};
+// 	return makeRequest(request, fiveMonthsAgo);
+// };
 
 //set selectedHistory state based on what history was selected 
 export function selectHistory(selectedHistory) {
@@ -214,16 +234,16 @@ function payload(type,request) {
 // };
 
 // export function multipleConcurrent() {
-// 		function firstReq() {
-// 		let firstReq =  axios({
-// 											method: 'GET',
-// 											url: lyftApiHistoryUrl+'?start_time=2015-01-01T00:00:00Z&limit=50',
-// 											headers: {
-// 												Authorization: 'Bearer '+ lyftAccessToken
-// 											}
-// 										})
-// 		return firstReq;
-// 		}
+		// function firstReq() {
+		// let firstReq =  axios({
+		// 									method: 'GET',
+		// 									url: lyftApiHistoryUrl+'?start_time=2015-01-01T00:00:00Z&limit=50',
+		// 									headers: {
+		// 										Authorization: 'Bearer '+ lyftAccessToken
+		// 									}
+		// 								})
+		// return firstReq;
+		// }
 		
 // 		function secReq() {
 // 		let secReq = axios({

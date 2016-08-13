@@ -19,13 +19,13 @@ export default class LyftAuthorization extends Component {
 			headers: {
 				"Authorization": "Basic " + btoa(lyftClientId + ":" + lyftClientSecret)
 			},				
-			data: {	
+			data:{
 				'grant_type': 'authorization_code',
-				'code': lyftAuthorizationCode
-			}
+				'code': lyftAuthorizationCode,
+			},
 		})
 		.then(function(response) {
-			console.log(response)
+			console.log("response", response)
 			sessionStorage.setItem('lyftAccessToken', response.data.access_token);
 			browserHistory.push('/main')
 		})
