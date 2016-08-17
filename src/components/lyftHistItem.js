@@ -7,12 +7,12 @@ const LyftHistItem = ({ride, onRowSelect}) => {
 	
 	return (
 		<tr onClick={()=> onRowSelect(ride)}>
-			<td>{moment(ride.pickupTime).format("dddd, MMMM Do YYYY, h:mm a")}</td>
-			<td>{moment(ride.dropoff.time).format("dddd, MMMM Do YYYY, h:mm a")}</td>
-			<td>{ride.pickupLoc}</td>
-			<td>{ride.dropoff.loc}</td>
-			<td>{convertToDollar(ride.rideCost)}</td>
-			<td>{convertToDollar(ride.rideOriginalCost)}</td>
+			<td>{moment(ride.pickup_time).format("dddd, MMMM Do YYYY, h:mm a")}</td>
+			<td>{moment(ride.dropoff_time).format("dddd, MMMM Do YYYY, h:mm a")}</td>
+			<td>{ride.pickup_loc}</td>
+			<td>{ride.dropoff_loc}</td>
+			<td>{convertToDollar(ride.ride_cost)}</td>
+			<td>{convertToDollar(ride.ride_originalcost)}</td>
 			<td>{ride.ride_type}</td>
 		</tr>
 	);

@@ -3,89 +3,30 @@ import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import rootReducer from '../reducers/index';
 import moment from 'moment';
-import { lyftTokenUri, lyftApiHistoryUrl } from '../components/keys';
+
+const lyft = require ('../../keys.js');
 
 export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
 export const SELECT_HISTORY = 'SELECT_HISTORY';
 export const CHART_RIDES = 'CHART_RIDES'; 
 
-const currentTime = moment().format();
-const sixMonthsAgo = moment().subtract(181, 'days').calendar();
-const fiveMonthsAgo = moment().subtract(150, 'days').calendar();
-const fourMonthsAgo = moment().subtract(120, 'days').calendar();
-
-const threeMonthsAgo = moment().subtract(90, 'days').calendar();
-const oneMonthAgo = moment().subtract(31, 'days')
-const twoMonthsAgo = moment().subtract(60, 'days')	
-const oneYearAgo = moment().subtract(365, 'days').calendar();
-
-const originTime = '2015-01-01T00:00:00Z';
-
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-};
-
-function convertHistoryObjToArray(object) {
-	let result = [];					
-		for (var i=0; i<object.data.ride_history.length; i++) {	
-			var lyftRideData = object.data.ride_history[i];						
-			result.push(lyftRideData);
-		};
-	return result;
-};
-
-function parseLyftHistory(array) {
-	let result = [];
-	for (var i=0; i<array.length; i++) {
-
-		if (array[i].status==='droppedOff') {
-			var historyData = {
-				ride_id: array[i].ride_id,
-				ride_type: array[i].ride_type,
-				requested_at: array[i].requested_at,
-				rideCost: array[i].price.amount,
-				rideOriginalCost: array[i].line_items[0].amount,
-				// rideTrustServiceFee: array[i].line_items[1].amount,
-				// lyftLineDiscount: array[i].line_items[2].amount,
-				originLoc: array[i].origin.address,
-				originLat: array[i].origin.lat,
-				originLng: array[i].origin.lng,
-				pickupLoc: array[i].pickup.address,
-				// pickupLat: array[i].destination.lat,
-				// pickupLng: array[i].destination.lng,
-				pickupTime: array[i].pickup.time,
-				dropoff: {
-					loc: array[i].dropoff.address,
-					lat: array[i].dropoff.lat,
-					lng: array[i].dropoff.lng,
-					time: array[i].dropoff.time,
-					driver: array[i].driver.first_name,
-				},	
-				vehicle: {
-					vehicleMake: array[i].vehicle.make,
-					vehicleModel: array[i].vehicle.model,
-					vehicleYear: array[i].vehicle.year
-				}
-			};
-			result.push(historyData);
-		};						
-	};
-	return result;
 };
 
 export function fetchLyftHistory() {
 	const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
 
 	const request = axios({
-		method: 'GET', 
+		method: 'POST', 
 		url: 'http://localhost:8080/API/'+lyftAccessToken
 	});
 
 	return request
 				 .then((response) => {
+				 	console.log(response)
 				 	return payload(FETCH_LYFT_HISTORY,response.data)
 				 });
-
 };
 
 // export function fetchLyftHistory() {
@@ -102,7 +43,7 @@ export function fetchLyftHistory() {
 // 		let parsedStart = moment(startTime).format();
 // 		const a = axios({
 // 								method: 'GET',
-// 								url: lyftApiHistoryUrl+'?start_time='+parsedStart+'&limit=50',
+// 								url: lyft.ApiHistoryUrl+'?start_time='+parsedStart+'&limit=50',
 // 								headers: {
 // 								Authorization: 'Bearer '+ lyftAccessToken
 // 								}

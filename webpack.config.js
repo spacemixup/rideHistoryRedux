@@ -25,7 +25,6 @@ module.exports = {
   		'/API**': 'http://localhost:1234',
   	},
     historyApiFallback: true,
-    contentBase: './',
-    progress: true 
+    contentBase: './'
   }
 };

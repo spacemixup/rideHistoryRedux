@@ -4,7 +4,8 @@ import { Link, browserHistory } from 'react-router';
 import axios from 'axios';
 import LyftButton from './lyftButton';
 import { getLyftAuth } from '../actions/index.js';
-import { lyftClientId, lyftClientSecret, lyftTokenUri, lyftApiHistoryUrl }  from './keys.js'
+
+const lyft = require ('../../keys.js');
 
 
 export default class LyftAuthorization extends Component {
@@ -15,9 +16,9 @@ export default class LyftAuthorization extends Component {
 
 		axios({
 			method: 'post',
-			url: lyftTokenUri,
+			url: lyft.TokenUri,
 			headers: {
-				"Authorization": "Basic " + btoa(lyftClientId + ":" + lyftClientSecret)
+				"Authorization": "Basic " + btoa(lyft.ClientId + ":" + lyft.ClientSecret)
 			},				
 			data:{
 				'grant_type': 'authorization_code',
@@ -33,9 +34,7 @@ export default class LyftAuthorization extends Component {
 				console.log(err)
 		});
 	}
-
 	//getLyftAccessToken.then go to next page.
-
 	render() {
 		const lyftAuthorizationCodeUri = window.location.href;
 		const lyftAuthorizationCode = lyftAuthorizationCodeUri.substring(lyftAuthorizationCodeUri.indexOf('=')+1, lyftAuthorizationCodeUri.indexOf('=')+17);

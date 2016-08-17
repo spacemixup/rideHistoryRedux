@@ -5,10 +5,11 @@
   "main": "index.js",
   "repository": "git@github.com:StephenGrider/ReduxSimpleStarter.git",
   "scripts": {
-    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server --progress --colors" ,
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
-    "test:watch": "npm run test -- --watch",
-    "lint": "eslint src"
+    "test:watch": "npm run test --watch",
+    "lint": "eslint src",
+    "reset": "psql -f histories.sql && nodemon server.js"
   },
   "author": "",
   "license": "ISC",
@@ -36,6 +37,7 @@
     "google-map-react": "^0.16.0",
     "lodash": "^4.14.1",
     "moment": "^2.14.1",
+    "pg-promise": "^5.3.1",
     "react": "^15.3.0",
     "react-addons-update": "^15.3.0",
     "react-custom-scrollbars": "^4.0.0",
