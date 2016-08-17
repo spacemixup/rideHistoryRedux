@@ -8,6 +8,7 @@ import routes from './routes';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise';
 import createLogger from 'redux-logger';
+import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
 
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, promise, logger)(createStore);

@@ -56,7 +56,7 @@ class BigContainer extends Component {
     } else {
       return {
         lat: 37.7749,
-        lng: -122.4194
+        lng: -122.4194,
       }
     }
   };
