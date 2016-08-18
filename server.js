@@ -2,8 +2,7 @@ const restify = require('restify');
 const histories = require('./server/histories');
 const server = restify.createServer();
 
-// server.post('/api/:token', lyft.setLyftAccessToken);
-
+server.post('/api/:token', histories.setLyftAccessToken);
 server.get('/api/history', histories.findAll);
 // server.get('/api/history/:id', histories.findById);
 
