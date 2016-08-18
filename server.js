@@ -1,21 +1,16 @@
 const restify = require('restify');
-const lyft = require('./server/lyft');
+const histories = require('./server/histories');
 const server = restify.createServer();
 
+// server.post('/api/:token', lyft.setLyftAccessToken);
 
+server.get('/api/history', histories.findAll);
+// server.get('/api/history/:id', histories.findById);
 
-function respond(req, res, next) {
-	res.send(`hello+${req.params.name}`);
-	next();
-}
-
-//initial history pull
-server.post('/API/:token', lyft.initialHistoryPull);
-//return single history
 
 server.listen(1234, () => {
 	console.log('%s listening at %s', server.name, server.url);
 });
 
 
-module.exports = 'API';
+module.exports = 'api';
