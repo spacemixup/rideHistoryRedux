@@ -7,13 +7,13 @@
   },  
   "extends": "airbnb",
   "parser": "babel-eslint",
-  "rules": {
-    "indent": [ 2, 4, "tab", {"SwitchCase": 1} ], 
-    "react/jsx-indent-props": [2, "tab"]
-  }, 
   "parserOptions":{
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
     }
   },  
+  "rules": {
+    "indent": [ 2, 4, "tab", {"SwitchCase": 1} ], 
+    "react/jsx-indent-props": [2, "space"]
+  }, 
 }

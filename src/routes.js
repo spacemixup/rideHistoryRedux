@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import App from './components/app';
+import App from './app';
 import LyftLogin from './components/lyftLogin';
 import LyftAuthorization from './components/lyftAuthorization';
 import LyftHist from './components/lyftHist';

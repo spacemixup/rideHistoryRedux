@@ -5,24 +5,24 @@ import LyftHistItem from './lyftHistItem';
 import moment from 'moment';
 
 
-const LyftHist = (props) =>  {
-	if (!props.history[0]) {
-		return <div> Loading...</div>
-	};
-		
-	const histItem = props.history.map((ride, index) => {	
-		return (
-			<LyftHistItem 
+const LyftHist = (props) => {
+	                    if (!props.history[0]) {
+		                    return <div> Loading...</div>;
+	}
+
+	                    const histItem = props.history.map((ride, index) => {
+		                    return (
+			<LyftHistItem
 				onRowSelect={props.onHistorySelect}
-				key={ride.ride_id} 
-				ride={ride}	
-			/>	
-		)
+				key={ride.ride_id}
+				ride={ride}
+			/>
+		);
 	});
 
-	return (
-		<table className="table table-hover small" style={{fontSize:'6px'}} >
-			<thead>	
+	                    return (
+		<table className="table table-hover small" style={{ fontSize: '6px' }} >
+			<thead>
 				<tr>
 					<th>Time Picked Up</th>
 					<th>Time Dropped Off</th>
@@ -41,5 +41,4 @@ const LyftHist = (props) =>  {
 };
 
 export default LyftHist;
-
 

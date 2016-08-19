@@ -1,7 +1,6 @@
 const axios = require('axios');
 const moment = require('moment');
 const lyft = require('../keys');
-
 const pgp = require('pg-promise')();
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/histories';
@@ -9,23 +8,23 @@ const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/
 const db = pgp(connectionString);
 
 function findAll(req, res, next) {
-  return db.any("select * from history")
-  .then(function(data) {
-    console.log("DATA", data);
-    res.send(data)
-    next()
+  return db.any('select * from history')
+  .then((data) => {
+    console.log('DATA', data);
+    res.send(data);
+    next();
   })
-  .catch(function (error) {
-    console.log("ERROR:", error);
+  .catch((error) => {
+    console.log('ERROR:', error);
   })
   .then(() => {
     pgp.end();
   });
-}  
+}
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-};
+}
 
 function convertHistoryObjToArray(object) {
   const result = [];
@@ -88,12 +87,12 @@ function insertHistoryArray(array){
 
   return db.none('INSERT INTO history(ride_id, ride_type, requested_at, ride_cost, ride_originalcost, origin_loc, origin_lat, origin_lng, pickup_loc, pickup_time, dropoff_loc, dropoff_lat, dropoff_lng, dropoff_time, driver, driver_rating, driver_image, vehicle_make, vehicle_model, vehicle_year, vehicle_color, vehicle_license, vehicle_image) VALUES $1', values)
   .then(() => {
-    console.log(array.length, " :records inserted" );
+    console.log(array.length, ' :records inserted');
     return;
   })
   .catch(error => {
     console.log("error", error);
-  })
+  });
 }
 
 function request(startTime, lyftAccessToken) {
@@ -159,7 +158,16 @@ function setLyftAccessToken(req, res, next) {
 }
 
 
+function findById(req, res, next ) {
+  const rideId = req.params.id;
+  return db.any('select * from history where ride_id=${rideId}')
+  .then(() => {
+
+  })
+}
+
 module.exports = {
   findAll,
   setLyftAccessToken,
+  findById,
 };
