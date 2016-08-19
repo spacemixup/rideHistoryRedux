@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
 export const SELECT_HISTORY = 'SELECT_HISTORY';
 export const CHART_RIDES = 'CHART_RIDES';
