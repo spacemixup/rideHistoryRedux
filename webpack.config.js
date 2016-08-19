@@ -1,7 +1,3 @@
-// import path from 'path';
-// var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-// var buildPath = path.resolve(__dirname, 'public', 'build');
-// var mainPath = path.resolve(__dirname, 'app', 'main.js');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -37,7 +33,7 @@ module.exports = {
     contentBase: './public',
     hot: true,
     plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-  ],
+      new webpack.HotModuleReplacementPlugin(),
+    ],
   },
 };
