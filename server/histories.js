@@ -141,7 +141,7 @@ function makeRequest(action, startTime, lyftAccessToken, historySoFar, xratelimi
 function pullCompleteHistory(lyftAccessToken) {
   const earliestDate = '2015-01-01T00:00:00Z'
   const completeHistory = [];
-  let limit = 5; 
+  let limit = 5;
   let token = lyftAccessToken;
   let ms = 0;
 
