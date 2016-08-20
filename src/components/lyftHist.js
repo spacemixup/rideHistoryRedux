@@ -21,15 +21,17 @@ const LyftHist = (props) => {
   });
 
   return (
-    <table className="table table-hover small" style={{fontSize:'6px'}} >
+    <table className="table table-hover small" style={{ fontSize: '6px' }} >
       <thead>
         <tr>
-          <th>Time Picked Up</th>
-          <th>Time Dropped Off</th>
+          <th>Date</th>
+          <th>Pick Up</th>
+          <th>Drop Off</th>
           <th>Pick up Location</th>
           <th>Drop Off Location</th>
           <th>Ride Cost</th>
           <th>Orig Cost</th>
+          <th>Savings</th>
           <th>Ride Type</th>
         </tr>
       </thead>

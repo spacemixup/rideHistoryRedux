@@ -5,8 +5,8 @@ import { fetchLyftHistory, selectHistory } from '../actions/index.js';
 import { default as update } from "react-addons-update";
 import LyftHist from './lyftHist';
 import BigMap from './BigMap';
-import DrawPathButtons from './drawPathButtons';
 import { Scrollbars } from 'react-custom-scrollbars';
+import Chart from './d3Chart';
 
 class BigContainer extends Component {
   //make sure there's initial history - pulls the 
@@ -69,15 +69,15 @@ class BigContainer extends Component {
             markers={this.markerArray()}
           />
         </div>
-        <div className="requestButtons">
-          <drawPathButtons />
+        <div className="scatterChart">
+          <Chart />
         </div>
         <div className="lyftHist">
-          <Scrollbars style={{ width: '100%', height: '50vw' }}>
-          <LyftHist 
-            history={this.props.history}
-            onHistorySelect={selectedHistory => this.onHistorySelect(selectedHistory)}
-          />
+          <Scrollbars >
+            <LyftHist
+              history={this.props.history}
+              onHistorySelect={selectedHistory => this.onHistorySelect(selectedHistory)}
+            />
           </Scrollbars>
         </div>
       </div>
