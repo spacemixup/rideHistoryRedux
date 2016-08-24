@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import {GoogleMapLoader, GoogleMap, Marker} from 'react-google-maps';
+import d3 from 'd3';
+import crossfilter from 'crossfilter';
 import { connect } from 'react-redux';
 import { fetchLyftHistory, selectHistory } from '../actions/index.js';
-import { default as update } from "react-addons-update";
+import { default as update } from 'react-addons-update';
 import LyftHist from './lyftHist';
-import BigMap from './BigMap';
+import BigMap from './bigMap';
+import Charts from './charts';
 import { Scrollbars } from 'react-custom-scrollbars';
-import Chart from './d3Chart';
 
 class BigContainer extends Component {
   //make sure there's initial history - pulls the 
@@ -69,11 +70,13 @@ class BigContainer extends Component {
             markers={this.markerArray()}
           />
         </div>
-        <div className="scatterChart">
-          <Chart />
+        <div className="charts">
+          <Charts
+            props={this.props.history}
+          />
         </div>
         <div className="lyftHist">
-          <Scrollbars >
+          <Scrollbars>
             <LyftHist
               history={this.props.history}
               onHistorySelect={selectedHistory => this.onHistorySelect(selectedHistory)}

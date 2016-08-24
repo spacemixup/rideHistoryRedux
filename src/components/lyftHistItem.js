@@ -18,13 +18,15 @@ const LyftHistItem = ({ ride, onRowSelect }) => {
       <td>{moment(ride.pickup_time).format('h:mm a')}</td>
       <td>{moment(ride.dropoff_time).format('h:mm a')}</td>
       <td>{ride.pickup_loc}</td>
-      <td className="driverPic">{ride.driver_image}</td>
+      <td className="driverPic">driverpic</td>
       <td>{convertToDollar(ride.ride_cost)}</td>
       <td>{convertToDollar(ride.ride_originalcost)}</td>
-      <td>{convertToDollar(savings)}</td>
+      <td className="savings">{convertToDollar(savings)}</td>
       <td>{ride.ride_type}</td>
     </tr>
   );
 };
+
+// <td className="driverPic">{ride.driver_image}</td>
 
 export default LyftHistItem;

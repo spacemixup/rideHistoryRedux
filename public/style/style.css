@@ -3,12 +3,13 @@ table {
  } 
 
 
-.driverPic img {
+/*.driverPic img {
   max-width: 50%;
   max-height: 50%;
   margin:auto;
   display:block;
-}
+}*/
+
 .rideDate td {
   column-width: 40px;
 }
@@ -22,19 +23,16 @@ table {
 .mainMap {
   display: inline-block;
   border: 1px solid red;
-  width: 50%;
-  height: 70%;
+  width: 100%;
+  height: 50%;
   vertical-align: top;
-}
-
-.scatterChart {
-  display: inline-block;
-  border: 1px solid green;
-  width: 50%;
-  height: 70%;
 }
 
 .lyftHist {
   border: 1px solid blue;
-  height: 170px;
+  height: 94px;
+}
+
+.savings {
+  color: red;
 }

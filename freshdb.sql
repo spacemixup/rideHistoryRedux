@@ -7,6 +7,7 @@ CREATE TABLE history (
 	ride_id VARCHAR(40) UNIQUE,
 	ride_type VARCHAR(20),
 	requested_at TIMESTAMP,
+	day_of_week INT,
 	ride_cost INT,
 	ride_originalcost INT,
 	origin_loc VARCHAR(100),

@@ -3,8 +3,7 @@ import { GoogleMapLoader, GoogleMap, Marker } from 'react-google-maps';
 
 const BigMap = (props) => {
   console.log('props', props);
-  return (
-    
+  return (   
         <GoogleMapLoader
           containerElement={
             <div
