@@ -43,28 +43,28 @@ function parseLyftHistory(array) {
       console.log(date);
       switch (date) {
         case 'Sunday':
-          date = 0;
+          date = 'Sun';
           break;
         case 'Monday':
-          date = 1;
+          date = 'Mon';
           break;
         case 'Tuesday':
-          date = 2;
+          date = 'Tue';
           break;
         case 'Wednesday':
-          date = 3;
+          date = 'Wed';
           break;
         case 'Thursday':
-          date = 4;
+          date = 'Thu';
           break;
         case 'Friday':
-          date = 5;
+          date = 'Fri';
           break;
         case 'Saturday':
-          date = 6;
+          date = 'Sat';
           break;
         default:
-          date = 7;
+          date = 'Err';
       }
 
       const historyData = {
