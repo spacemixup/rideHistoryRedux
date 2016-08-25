@@ -39,39 +39,10 @@ function parseLyftHistory(array) {
   const result = [];
   for (let i = 0; i < array.length; i++) {
     if (array[i].status === 'droppedOff') {
-      let date = moment(array[i].requested_at).format('dddd');
-      console.log(date);
-      switch (date) {
-        case 'Sunday':
-          date = 'Sun';
-          break;
-        case 'Monday':
-          date = 'Mon';
-          break;
-        case 'Tuesday':
-          date = 'Tue';
-          break;
-        case 'Wednesday':
-          date = 'Wed';
-          break;
-        case 'Thursday':
-          date = 'Thu';
-          break;
-        case 'Friday':
-          date = 'Fri';
-          break;
-        case 'Saturday':
-          date = 'Sat';
-          break;
-        default:
-          date = 'Err';
-      }
-
       const historyData = {
         ride_id: array[i].ride_id,
         ride_type: array[i].ride_type,
         requested_at: array[i].requested_at,
-        day_of_week: date,
         ride_cost: array[i].price.amount,
         ride_originalcost: array[i].line_items[0].amount,
         origin_loc: array[i].origin.address,
@@ -110,9 +81,9 @@ function Inserts(template, data) {
 }
 
 function insertHistoryArray(array) {
-  const values = new Inserts('${ride_id}, ${ride_type}, ${day_of_week}, ${requested_at}, ${ride_cost}, ${ride_originalcost}, ${origin_loc}, ${origin_lat}, ${origin_lng}, ${pickup_loc}, ${pickup_time}, ${dropoff_loc}, ${dropoff_lat}, ${dropoff_lng}, ${dropoff_time}, ${driver}, ${driver_rating}, ${driver_image}, ${vehicle_make}, ${vehicle_model}, ${vehicle_year}, ${vehicle_color}, ${vehicle_license}, ${vehicle_image}', array);
+  const values = new Inserts('${ride_id}, ${ride_type}, ${requested_at}, ${ride_cost}, ${ride_originalcost}, ${origin_loc}, ${origin_lat}, ${origin_lng}, ${pickup_loc}, ${pickup_time}, ${dropoff_loc}, ${dropoff_lat}, ${dropoff_lng}, ${dropoff_time}, ${driver}, ${driver_rating}, ${driver_image}, ${vehicle_make}, ${vehicle_model}, ${vehicle_year}, ${vehicle_color}, ${vehicle_license}, ${vehicle_image}', array);
 
-  return db.none('INSERT INTO history(ride_id, ride_type, day_of_week, requested_at, ride_cost, ride_originalcost, origin_loc, origin_lat, origin_lng, pickup_loc, pickup_time, dropoff_loc, dropoff_lat, dropoff_lng, dropoff_time, driver, driver_rating, driver_image, vehicle_make, vehicle_model, vehicle_year, vehicle_color, vehicle_license, vehicle_image) VALUES $1', values)
+  return db.none('INSERT INTO history(ride_id, ride_type, requested_at, ride_cost, ride_originalcost, origin_loc, origin_lat, origin_lng, pickup_loc, pickup_time, dropoff_loc, dropoff_lat, dropoff_lng, dropoff_time, driver, driver_rating, driver_image, vehicle_make, vehicle_model, vehicle_year, vehicle_color, vehicle_license, vehicle_image) VALUES $1', values)
   .then(() => {
     console.log(array.length, ' :records inserted');
     return;
