@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import d3 from 'd3';
-import crossfilter from 'crossfilter';
 import { connect } from 'react-redux';
 import { fetchLyftHistory, selectHistory } from '../actions/index.js';
 import { default as update } from 'react-addons-update';

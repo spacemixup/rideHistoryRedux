@@ -2,6 +2,7 @@ const axios = require('axios');
 const moment = require('moment');
 const lyft = require('../keys');
 const pgp = require('pg-promise')();
+const _ = require('lodash');
 
 const connectionString = process.env.DATABASE_URL || 'postgres://localhost:5432/histories';
 
@@ -65,9 +66,11 @@ function parseLyftHistory(array) {
         vehicle_image: array[i].vehicle.image_url,
       };
       result.push(historyData);
+      
     }
   }
-  return result;
+  const uniqueResult = _.uniqBy(result, 'ride_id')
+  return uniqueResult;
 }
 
 function Inserts(template, data) {
@@ -114,6 +117,7 @@ function makeRequest(action, startTime, lyftAccessToken, historySoFar, xratelimi
     .then(response => {
       let convertedHistoryArray = convertHistoryObjToArray(response);
       let parsedHistoryArray = parseLyftHistory(convertedHistoryArray);
+      console.log(parsedHistoryArray)
       console.log("F", parsedHistoryArray[parsedHistoryArray.length-1].dropoff_time, "L", parsedHistoryArray[0].dropoff_time)
       let parsedLyftHistory = historySoFar.concat(parsedHistoryArray); 
       //if the query gives less than max results or parsedHistoryArray is empty 
