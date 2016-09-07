@@ -40,3 +40,8 @@ table {
 .row-graph {
   display: inline-block;
 }
+
+.charts {
+  cursor: pointer;
+  border: 1px solid green;
+}

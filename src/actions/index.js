@@ -3,6 +3,7 @@ import axios from 'axios';
 export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
 export const SELECT_HISTORY = 'SELECT_HISTORY';
 export const CHART_RIDES = 'CHART_RIDES';
+export const COLLAPSE = 'COLLAPSE';
 
 function payload(type, request) {
   return {
@@ -22,6 +23,10 @@ export function fetchLyftHistory() {
       response.data.reverse();
       return payload(FETCH_LYFT_HISTORY, response.data);
     });
+}
+
+export function collapse(state) {
+  return payload(COLLAPSE, state);
 }
 
 // export function fetchLyftHistory() {

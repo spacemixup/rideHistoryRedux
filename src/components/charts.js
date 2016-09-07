@@ -20,8 +20,6 @@ const Charts = ({props}) => {
     d.date = moment(d.pickup_time).format('MMMM Do YY');
     d.year = moment(d.pickup_time).format('YYY');
     d.month = moment(d.pickup_time).format('MMMM');
-
-    console.log(d)
   });
 
   const ndx = crossfilter(props);

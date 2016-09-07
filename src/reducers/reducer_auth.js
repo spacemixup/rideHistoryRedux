@@ -1,5 +1,5 @@
-import { FETCH_LYFT_HISTORY, SELECT_HISTORY } from '../actions/index';
-const INITIAL_STATE = { all: [], selectedHistory: null, marker:[] };
+import { FETCH_LYFT_HISTORY, SELECT_HISTORY, COLLAPSE } from '../actions/index';
+const INITIAL_STATE = { all: [], selectedHistory: null, marker:[], open: true };
 
 export default function(state = INITIAL_STATE, action) {
 	switch(action.type) {
@@ -18,6 +18,8 @@ export default function(state = INITIAL_STATE, action) {
 																																	}
 																												 				}	
              }
+    case COLLAPSE: 
+    	return {...state, open: action.payload}
 		default: 
 			return state;
 		}

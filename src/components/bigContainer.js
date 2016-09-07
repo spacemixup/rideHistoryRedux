@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchLyftHistory, selectHistory } from '../actions/index.js';
+import { Button, Collapse } from 'react-bootstrap';
+
+import { fetchLyftHistory, selectHistory, collapse } from '../actions/index.js';
 import { default as update } from 'react-addons-update';
 import LyftHist from './lyftHist';
 import BigMap from './bigMap';
@@ -9,6 +11,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 class BigContainer extends Component {
   //make sure there's initial history - pulls the 
+
   componentWillMount() {
     this.props.fetchLyftHistory();
   };
@@ -16,6 +19,14 @@ class BigContainer extends Component {
   onHistorySelect(selectedHistory) {
     this.props.selectHistory(selectedHistory);
   }; 
+
+  toggleCollapse(state) {
+    console.log("state", state)
+    console.log("props", this.props)
+    this.props.collapse(state);
+
+  };
+
 
   markerArray() {   
     //take the marker object - this.props.marker
@@ -57,6 +68,7 @@ class BigContainer extends Component {
     };
   }
 
+
   render() {
     return (
       <div className="bigContainer">
@@ -69,9 +81,17 @@ class BigContainer extends Component {
           />
         </div>
         <div className="charts">
-          <Charts
-            props={this.props.history}
-          />
+          <Button onClick={()=> this.toggleCollapse(!this.props.open)}>
+          click
+          </Button>
+          
+          <Collapse in={this.props.open}>
+          <div>
+            <Charts
+              props={this.props.history}
+            />
+          </div>
+          </Collapse>
         </div>
         <div className="lyftHist">
           <Scrollbars>
@@ -91,7 +111,8 @@ function mapStateToProps(state) {
     history: state.history.all,
     selectedHistory: state.history.selectedHistory,
     marker: state.history.marker,
+    open: state.history.open,
   };
 }
 
-export default connect(mapStateToProps, { fetchLyftHistory, selectHistory })(BigContainer);
+export default connect(mapStateToProps, { fetchLyftHistory, selectHistory, collapse })(BigContainer);
