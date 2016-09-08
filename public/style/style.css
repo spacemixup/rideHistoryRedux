@@ -44,4 +44,16 @@ table {
 .charts {
   cursor: pointer;
   border: 1px solid green;
+  vertical-align: top;
+  display: inline-block;
 }
+
+.dc-chart path.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+/*.axis--x path {
+  display: none;
+}*/

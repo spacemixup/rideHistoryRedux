@@ -6,43 +6,86 @@ import dc from 'dc';
 // const dc = require('dc');
 import moment from 'moment';
 
-
 const Charts = ({props}) => {
   
-  if (!props) { 
+  if (!props) {
     return <div> loading... </div>
-  };
+  } else {
 
-  var ridesByMonth = dc.rowChart("#dc-row-ridesByMonth");
-  var rideType = dc.rowChart("#dc-row-rideType");
+  // function sort_group(group, order) {
+  //   return {
+  //       all: function() {
+  //           var g = group.all(), map = {};
+
+  //           g.forEach(function(kv) {
+  //               map[kv.key] = kv.value;
+  //           });
+  //           return order.map(function(k) {
+  //               return {key: k, value: map[k]};
+  //           });
+  //       }
+  //   };
+  // };
+
+  //  var order = props.map(function(values) {
+  //     return values.x;
+  //   });
+  // create dc.js chart objects & link to div
+  // var ridesByDow = dc.rowChart("#dc-row-ridesByDow");
+  var ridesByMonth = dc.barChart("#dc-bar-ridesByMonth");
+  // var rideType = dc.pieChart("#dc-pie-rideType");  
+  var timeChart = dc.lineChart('#dc-line-ridesByMonth');
 
   props.forEach((d) => {  
-    d.date = moment(d.pickup_time).format('MMMM Do YY');
-    d.year = moment(d.pickup_time).format('YYY');
-    d.month = moment(d.pickup_time).format('MMMM');
+
+    d.date = moment(d.pickup_time).format('YYYY-MM-DD HH:mm:ss');
+    d.year = moment(d.pickup_time).format('YYYY');
+    // d.month = moment(d.pickup_time).format('MMMM');
+    d.month = moment(d.pickup_time).format('M');
+    d.monthYear = moment(d.pickup_time).format('M-YYYY');
+    d.dow = moment(d.pickup_time).format('ddd');
+    d.count = 1;
+    d.hour = moment(d.pickup_time).format('hh')
   });
 
-  const ndx = crossfilter(props);
 
-  const all = ndx.groupAll();
 
-  const yearlyDimension = ndx.dimension((d) => d.year);
-  const monthlyDimension = ndx.dimension((d) => d.month);
+  var ndx = crossfilter(props);
 
-  const rideTypeDimension = ndx.dimension((d) => d.ride_type);
-  const rideTypeGroup = rideTypeDimension.group();
-
-  const mDg = monthlyDimension.group();
-  
-  ridesByMonth.width(300)
+  const month = ndx.dimension((d) => d.month)
+  const monthGroup = month.group()
+    
+  ridesByMonth.width(375)
              .height(200)
-             .dimension(monthlyDimension)
-             .group(mDg);
-             
-  rideType.width(300)
-          .height(200)
-          .dimension(rideTypeDimension)
-          .group(rideTypeGroup)
+             .dimension(month)
+             .group(monthGroup)
+             .xUnits(()=> 15)
+             .x(d3.scaleLinear().domain([1, 12]))
+             .elasticY(true)
+             .centerBar(true)
+
+  timeChart.width(1000)
+    .height(200)
+    .dimension(month)
+    .group(monthGroup)
+    // .x(d3.scaleLinear().domain([1,12]))
+    .elasticY(true)
+    .x(d3.scaleTime().domain(d3.extent(props, (d) => d.month)))
+    .xAxis()
+    // .xAxis()
+    
+
+    
+
+  // rideType.width(270)
+  //         .height(200)
+  //         .dimension(rideTypeDimension)
+  //         .group(rideTypeGroup)
+
+  // ridesByDow.width(270)
+  //           .height(200)
+  //           .dimension(dowDimension)
+  //           .group(dowDimensionGroup)
     
   dc.renderAll();
 
@@ -50,22 +93,19 @@ const Charts = ({props}) => {
     <div className="row-fluid">
       <div className="remaining-graphs span8">
         <div className="row-fluid">
-          <div className="bubble-graph span12" id="dc-bubble-graph">
-          </div>
-        </div>
-        <div className="row-fluid">
-         <div className="row-graph" id="dc-row-rideType">
-         </div>
-          <div className="row-graph" id="dc-row-ridesByMonth">
-          </div>
-          <div className="row-graph" id="dc-bar-graph">
-          </div>
-          <div className="pie-graph span4" id="dc-line-chart">
-          </div>
-        </div>
+          <div className="row-graph" id="dc-bar-ridesByMonth"></div>
+          <div className="row-graph dc-chart axis--x" id="dc-line-ridesByMonth"></div>
+      </div>
       </div>
     </div>
   );
+  // return (
+  //   <div> 
+  //     <div className="row-graph" id="#dc-bar-ridesByMonth"></div>
+  //     <div className="row-graph" id="#dc-pie-rideType"></div>
+  //   </div>
+  // )
+}
 };
 
 export default Charts;
