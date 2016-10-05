@@ -97,10 +97,11 @@ function insertHistoryArray(array) {
 }
 
 function request(startTime, lyftAccessToken) {
-  const parsedStart = moment(startTime).format();
+  // const parsedStart = moment(startTime).format();
+  // console.log("PARSEDSTART", parsedStart)
   const query = axios({
                   method: 'GET',
-                  url: lyft.ApiHistoryUrl + '?start_time=' + parsedStart + '&limit=50',
+                  url: lyft.ApiHistoryUrl + '?start_time=' + startTime + '&limit=50',
                   headers: {
                   Authorization: 'Bearer ' + lyftAccessToken
                   }
@@ -117,7 +118,7 @@ function makeRequest(action, startTime, lyftAccessToken, historySoFar, xratelimi
     .then(response => {
       let convertedHistoryArray = convertHistoryObjToArray(response);
       let parsedHistoryArray = parseLyftHistory(convertedHistoryArray);
-      console.log(parsedHistoryArray)
+      
       console.log("F", parsedHistoryArray[parsedHistoryArray.length-1].dropoff_time, "L", parsedHistoryArray[0].dropoff_time)
       let parsedLyftHistory = historySoFar.concat(parsedHistoryArray); 
       //if the query gives less than max results or parsedHistoryArray is empty 
@@ -135,13 +136,25 @@ function makeRequest(action, startTime, lyftAccessToken, historySoFar, xratelimi
         console.log("hit limit - taking a break");
       }  
       let mostRecentDate = parsedHistoryArray[parsedHistoryArray.length-1].dropoff_time 
-      return makeRequest(action, mostRecentDate, lyftAccessToken, parsedLyftHistory, limit, time)
+      let mRp = moment(mostRecentDate).format();
+
+      return makeRequest(action, mRp, lyftAccessToken, parsedLyftHistory, limit, time)
     })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+      }
+    })
+  })
+  .catch((error) => {
+    if (error.response) {
+      console.log(error.response)
+    }
   })
 }
 
 function pullCompleteHistory(lyftAccessToken) {
-  const earliestDate = '2015-01-01T00:00:00Z';
+  const earliestDate = '2016-01-01T00:00:00Z';
   const completeHistory = [];
   let limit = 5;
   let token = lyftAccessToken;

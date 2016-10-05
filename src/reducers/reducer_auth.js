@@ -2,11 +2,11 @@ import { FETCH_LYFT_HISTORY, SELECT_HISTORY, COLLAPSE } from '../actions/index';
 const INITIAL_STATE = { all: [], selectedHistory: null, marker:[], open: true };
 
 export default function(state = INITIAL_STATE, action) {
-	switch(action.type) {
+	switch (action.type) {
 		case FETCH_LYFT_HISTORY:
-			return {...state, all: action.payload }
+			return { ...state, all: action.payload }
 		case SELECT_HISTORY:
-			return {...state, selectedHistory: action.payload, marker:{
+			return { ...state, selectedHistory: action.payload, marker:{
 																																	ride_id: action.payload.ride_id,	
 																																	originLatLng: {
 																																	lat:action.payload.origin_lat, 

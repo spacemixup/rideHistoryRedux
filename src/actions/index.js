@@ -30,7 +30,10 @@ export function collapse(state) {
 }
 
 // export function fetchLyftHistory() {
+  
 //   const lyftAccessToken = sessionStorage.getItem('lyftAccessToken');
+
+//   console.log(lyftAccessToken);
 
 //   const request = axios({
 //     method: 'POST',

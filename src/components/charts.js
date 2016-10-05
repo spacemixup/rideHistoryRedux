@@ -10,7 +10,7 @@ const Charts = ({props}) => {
   
   if (!props) {
     return <div> loading... </div>
-  } else {
+  } else { 
 
   // function sort_group(group, order) {
   //   return {
@@ -31,11 +31,11 @@ const Charts = ({props}) => {
   //     return values.x;
   //   });
   // create dc.js chart objects & link to div
-  // var ridesByDow = dc.rowChart("#dc-row-ridesByDow");
+  var ridesByDow = dc.rowChart("#dc-row-ridesByDow");
   var ridesByMonth = dc.barChart("#dc-bar-ridesByMonth");
-  // var rideType = dc.pieChart("#dc-pie-rideType");  
+  var rideType = dc.pieChart("#dc-pie-rideType");  
   var timeChart = dc.lineChart('#dc-line-ridesByMonth');
-
+  
   props.forEach((d) => {  
 
     d.date = moment(d.pickup_time).format('YYYY-MM-DD HH:mm:ss');
@@ -54,7 +54,13 @@ const Charts = ({props}) => {
 
   const month = ndx.dimension((d) => d.month)
   const monthGroup = month.group()
-    
+
+  const dowDimension = ndx.dimension((d) => d.dow)
+  const dowDimensionGroup = dowDimension.group()
+
+  const rideTypeDimension = ndx.dimension((d) => d.ride_type)
+  const rideTypeGroup = rideTypeDimension.group()
+
   ridesByMonth.width(375)
              .height(200)
              .dimension(month)
@@ -64,7 +70,7 @@ const Charts = ({props}) => {
              .elasticY(true)
              .centerBar(true)
 
-  timeChart.width(1000)
+  timeChart.width(1100)
     .height(200)
     .dimension(month)
     .group(monthGroup)
@@ -72,20 +78,20 @@ const Charts = ({props}) => {
     .elasticY(true)
     .x(d3.scaleTime().domain(d3.extent(props, (d) => d.month)))
     .xAxis()
-    // .xAxis()
-    
 
-    
+  rideType.width(270)
+          .height(200)
+          .dimension(rideTypeDimension)
+          .group(rideTypeGroup)
+          .innerRadius(30)
+          .radius(100)
+          .label((d) => d.ride_type)
+          .legend(dc.legend().y(10).itemHeight(13).gap(5))
 
-  // rideType.width(270)
-  //         .height(200)
-  //         .dimension(rideTypeDimension)
-  //         .group(rideTypeGroup)
-
-  // ridesByDow.width(270)
-  //           .height(200)
-  //           .dimension(dowDimension)
-  //           .group(dowDimensionGroup)
+  ridesByDow.width(300)
+            .height(200)
+            .dimension(dowDimension)
+            .group(dowDimensionGroup)
     
   dc.renderAll();
 
@@ -94,6 +100,8 @@ const Charts = ({props}) => {
       <div className="remaining-graphs span8">
         <div className="row-fluid">
           <div className="row-graph" id="dc-bar-ridesByMonth"></div>
+          <div className="row-graph"  id="dc-row-ridesByDow"></div>
+          <div className="row-graph" id="dc-pie-rideType"></div>
           <div className="row-graph dc-chart axis--x" id="dc-line-ridesByMonth"></div>
       </div>
       </div>
@@ -105,7 +113,7 @@ const Charts = ({props}) => {
   //     <div className="row-graph" id="#dc-pie-rideType"></div>
   //   </div>
   // )
-}
+  }
 };
 
 export default Charts;
