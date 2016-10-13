@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-const lyft = require ('../../keys.js');
+const lyft = require('../../keys.js');
 
 class LyftButton extends Component {
 	authorizeLyft(e) {

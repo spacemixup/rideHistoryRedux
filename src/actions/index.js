@@ -4,12 +4,16 @@ export const FETCH_LYFT_HISTORY = 'FETCH_LYFT_HISTORY';
 export const SELECT_HISTORY = 'SELECT_HISTORY';
 export const CHART_RIDES = 'CHART_RIDES';
 export const COLLAPSE = 'COLLAPSE';
+export const UPDATE_SLIDER_VALUE = 'UPDATE_SLIDER_VALUE';
 
 function payload(type, request) {
   return {
     type,
     payload: request,
   };
+}
+export function updateSliderValue(value) {
+  return payload(UPDATE_SLIDER_VALUE, value);
 }
 
 export function fetchLyftHistory() {

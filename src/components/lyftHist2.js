@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchLyftHistory, selectHistory } from '../actions/index.js';
@@ -21,9 +22,24 @@ const LyftHist = (props) => {
   });
 
   return (
-       <div className="divContainer">  
+    <table className="table table-hover small" style={{ fontSize: '6px' }} >
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Pick Up</th>
+          <th>Drop Off</th>
+          <th>Pick up Location</th>
+          <th>Drop Off Location</th>
+          <th>Ride Cost</th>
+          <th>Orig Cost</th>
+          <th>Savings</th>
+          <th>Ride Type</th>
+        </tr>
+      </thead>
+      <tbody>
         {histItem}
-      </div>
+      </tbody>
+    </table>
   );
 };
 
