@@ -10,8 +10,7 @@ class MainSlider extends Component {
 componentDidMount() { 
 
   let data = this.props.history;
-  
-  
+    
   const parseDate = d3.time.format.iso
   const lastRide = parseDate.parse(data[0].pickup_time)
   // const firstRide = moment(data[0].pickup_time).format('YYYY-MM-DD HH:mm:ss');

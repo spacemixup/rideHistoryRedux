@@ -16,18 +16,47 @@ import MainSlider from './mainSlider';
 
 class BigContainer extends Component {
   //make sure there's initial history - pulls the 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      origin: new google.maps.LatLng(41.8507300, -87.6512600),
+      destination: new google.maps.LatLng(41.8525800, -87.6514100),
+      directions: null,  
+    }
+  }
+
   componentWillMount() {
     this.props.fetchLyftHistory();
   };
+
+  // componentDidMount() {
+  //   const DirectionsService = new google.maps.DirectionsService();
+    
+  //   DirectionsService.route({
+  //     origin: this.state.origin,
+  //     destination: this.state.destination,
+  //     travelMode: google.maps.TravelMode.DRIVING,
+  //   }, (result, status) => {
+  //     console.log("RESULTTTTT", result)
+  //     if (status === google.maps.DirectionsStatus.OK) {
+  //       this.setState({
+  //         directions: result,
+  //       });
+  //     } else {
+  //       console.error(`error fetching directions ${result}`);
+  //     }
+  //   });
+
+  // }
 
   // onHistorySelect(selectedHistory) {
   //   this.props.selectHistory(selectedHistory);
   // }; 
 
-  onValueSelect(selectedValue) {
-    
+  onValueSelect(selectedValue) { 
     this.props.selectHistory(this.props.history[selectedValue]);
-  }; 
+  }
 
   // // toggleCollapse(state) {
   // //   console.log("state", state)
@@ -76,6 +105,18 @@ class BigContainer extends Component {
     };
 
   }
+
+//   getDirections() {
+//   if (!this.props.selectedHistory) {
+//     return this.state.directions;
+//   }
+
+//   console.log("SELECT HIST", this.props.selectedHistory)
+//   this.state.origin = new google.maps.LatLng(this.props.selectedHistory.origin_lat, this.props.selectedHistory.origin_lng)
+//   this.state.destination = new google.maps.LatLng(this.props.selectedHistory.dropoff_lat, this.props.selectedHistory.dropoff_lng)
+  
+//   return this.state.directions;
+// }
 
   // <div className="charts">
   //   <Button onClick={()=> this.toggleCollapse(!this.props.open)}>
@@ -131,6 +172,7 @@ class BigContainer extends Component {
   //   markers={this.markerArray()}
   // />
 
+
   mainSlider() {
     const data = this.props.history;
     if (data[0]) {
@@ -146,6 +188,33 @@ class BigContainer extends Component {
     )
   }
 
+  getDirections() {
+    const data = this.props.selectedHistory;
+    
+    if (data) {
+    const DirectionsService = new google.maps.DirectionsService();
+    
+    DirectionsService.route({
+      origin: this.props.marker.originLatLng,
+      destination: this.props.marker.dropoffLatLng,
+      travelMode: google.maps.TravelMode.DRIVING,
+    }, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        this.setState({
+          directions: result,
+        });
+      } else {
+        console.error(`error fetching directions ${result}`);
+      }
+    });
+  } 
+
+  return this.state.directions;
+}
+    
+
+
+
   render() {
     return (
       <div className="bigContainer">
@@ -159,6 +228,7 @@ class BigContainer extends Component {
             }
             center={this.setCenter()}
             markers={this.markerArray()}
+            directions={this.getDirections()}
           />
         </div>
         <div className="mainSlider"> 

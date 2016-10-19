@@ -16,7 +16,8 @@ export default function(state = INITIAL_STATE, action) {
 																																	lat: action.payload.dropoff_lat,
 																																	lng: action.payload.dropoff_lng
 																																	}
-																												 				}	
+																												 				},
+
              }
     case COLLAPSE: 
     	return {...state, open: action.payload}
