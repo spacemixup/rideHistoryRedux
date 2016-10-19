@@ -5,26 +5,29 @@ import { Button, Collapse } from 'react-bootstrap';
 import { fetchLyftHistory, selectHistory, collapse, updateSliderValue } from '../actions/index.js';
 import { default as update } from 'react-addons-update';
 import LyftHist from './lyftHist';
-import BigMap from './bigMap';
+// import BigMap from './bigMap';
+import SimpleMap from './simpleMap';
 import Charts from './charts';
+import DisplayBar from './displayBar';
 
 import { Scrollbars } from 'react-custom-scrollbars';
 
 import MainSlider from './mainSlider';
 
-var Slider = require('nw-react-slider')
-
-
 class BigContainer extends Component {
   //make sure there's initial history - pulls the 
-  
-  // componentWillMount() {
-  //   this.props.fetchLyftHistory();
-  // };
+  componentWillMount() {
+    this.props.fetchLyftHistory();
+  };
 
   // onHistorySelect(selectedHistory) {
   //   this.props.selectHistory(selectedHistory);
   // }; 
+
+  onValueSelect(selectedValue) {
+    
+    this.props.selectHistory(this.props.history[selectedValue]);
+  }; 
 
   // // toggleCollapse(state) {
   // //   console.log("state", state)
@@ -32,53 +35,47 @@ class BigContainer extends Component {
   // //   this.props.collapse(state);
   // // };
 
-  // handleSliderChange(value, position) {
-  //   console.log("POSITION:", position, "VALUE", value)
+  markerArray() {
+    //take the marker object - this.props.marker
+      //parse the object into an array
+    const data = this.props.selectedHistory;
+    if (data) {
+      const startIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-start.png');
+      const endIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-end.png');
 
-  //   // console.log("props", this.props)
-  //   this.props.updateSliderValue(value);
-  // };
+      return [
+        {
+          defaultAnimation:2,
+          key: this.props.ride_id+'pickup',
+          position: this.props.marker.originLatLng,
+          icon: startIcon,
+        },
+        {
+          defaultAnimation:2,
+          key: this.props.ride_id+'dropoff',
+          position: this.props.marker.dropoffLatLng,
+          icon: endIcon,
+        },
+      ];
+    }
+    return [];
+  }
 
+  setCenter() {
+    const data = this.props.selectedHistory;
 
-  // markerArray() {
-  //   //take the marker object - this.props.marker
-  //     //parse the object into an array
-  //   const data = this.props.selectedHistory;
-  //   if (data) {
-  //     const startIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-start.png');
-  //     const endIcon = new google.maps.MarkerImage('https://www.google.com/mapfiles/dd-end.png');
+    if (data) {
+      return {
+        lat: this.props.marker.originLatLng.lat,
+        lng: this.props.marker.originLatLng.lng,
+      };
+    }
+    return {
+      lat: 37.7749,
+      lng: -122.4194,
+    };
 
-  //     return [
-  //       {
-  //         defaultAnimation:2,
-  //         key: this.props.ride_id+'pickup',
-  //         position: this.props.marker.originLatLng,
-  //         icon: startIcon,
-  //       },
-  //       {
-  //         defaultAnimation:2,
-  //         key: this.props.ride_id+'dropoff',
-  //         position: this.props.marker.dropoffLatLng,
-  //         icon: endIcon,
-  //       },
-  //     ];
-  //   }
-  //   return [];
-  // }
-
-  // setCenter() {
-  //   const data = this.props.selectedHistory;
-  //   if (data) {
-  //     return {
-  //       lat: this.props.marker.originLatLng.lat,
-  //       lng: this.props.marker.originLatLng.lng,
-  //     };
-  //   }
-  //   return {
-  //     lat: 37.7749,
-  //     lng: -122.4194,
-  //   };
-  // }
+  }
 
   // <div className="charts">
   //   <Button onClick={()=> this.toggleCollapse(!this.props.open)}>
@@ -116,24 +113,7 @@ class BigContainer extends Component {
   //       />
   //      </div>
   //     </div>
-  // <div className="slider">
-  //  <Slider
-  //  value={0}
-  //  min={0}
-  //  max={5}
-  //  ticks
-  //  onChange={(value, position) => this.handleSliderChange(value, position)}
-  //  displayFollowerPopover
-  //  />
-  // </div>
-  // <div className="mainMap">
-  //   <BigMap
-  //     selectedHistory={this.props.selectedHistory}
-  //     defaultZoom={12}
-  //     defaultCenter={this.setCenter()}
-  //     markers={this.markerArray()}
-  //   />
-  // </div>
+  
   // <div className="lyftHist">
   //          <LyftHist
   //            history={this.props.history}
@@ -143,15 +123,54 @@ class BigContainer extends Component {
 
   //   );
   // }
+
+  // <BigMap
+  //   selectedHistory={this.props.selectedHistory}
+  //   defaultZoom={12}
+  //   defaultCenter={this.setCenter()}
+  //   markers={this.markerArray()}
+  // />
+
+  mainSlider() {
+    const data = this.props.history;
+    if (data[0]) {
+      return (
+        <MainSlider 
+          history={this.props.history}
+          onValueSelect={selectedValue => this.onValueSelect(selectedValue)}
+        />
+      )
+    }
+    return (
+      <div> loading.. </div>
+    )
+  }
+
   render() {
     return (
       <div className="bigContainer">
-    
-      <MainSlider />
-       
+        <div className="mainMap">
+          <SimpleMap
+            containerElement={
+              <div style={{ height: `100%` }} />
+            }
+            mapElement={
+              <div style={{ height: `100%` }} />
+            }
+            center={this.setCenter()}
+            markers={this.markerArray()}
+          />
+        </div>
+        <div className="mainSlider"> 
+        {this.mainSlider()}
+        </div>
+        <div className="displayBar">
+        <DisplayBar 
+          selectedHistory={this.props.selectedHistory}
+          history={this.props.history}
+        /> 
+        </div>
       </div>
-
-
     );
   }
 }

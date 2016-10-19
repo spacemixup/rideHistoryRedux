@@ -1,12 +1,10 @@
 import { FETCH_LYFT_HISTORY, SELECT_HISTORY, COLLAPSE, UPDATE_SLIDER_VALUE } from '../actions/index';
-const INITIAL_STATE = { all: [], selectedHistory: null, marker:[], open: true, sliderValue: {value: 3, min: 0, max: 10} };
+const INITIAL_STATE = { all: [], selectedHistory: null, marker:[], open: true};
 
 export default function(state = INITIAL_STATE, action) {
 	switch (action.type) {
 		case FETCH_LYFT_HISTORY:
 			return { ...state, all: action.payload }
-		case UPDATE_SLIDER_VALUE: 
-			return { ...state, sliderValue: {value: action.payload }}	
 		case SELECT_HISTORY:
 			return { ...state, selectedHistory: action.payload, marker:{
 																																	ride_id: action.payload.ride_id,	
