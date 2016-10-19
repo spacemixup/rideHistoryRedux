@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Collapse } from 'react-bootstrap';
-
-import { fetchLyftHistory, selectHistory, collapse, updateSliderValue } from '../actions/index.js';
 import { default as update } from 'react-addons-update';
+import { fetchLyftHistory, selectHistory, collapse, updateSliderValue } from '../actions/index.js';
 import LyftHist from './lyftHist';
-// import BigMap from './bigMap';
 import SimpleMap from './simpleMap';
 import Charts from './charts';
 import DisplayBar from './displayBar';
@@ -15,7 +13,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import MainSlider from './mainSlider';
 
 class BigContainer extends Component {
-  //make sure there's initial history - pulls the 
   constructor(props) {
     super(props);
 
@@ -23,41 +20,16 @@ class BigContainer extends Component {
       origin: new google.maps.LatLng(41.8507300, -87.6512600),
       destination: new google.maps.LatLng(41.8525800, -87.6514100),
       directions: null,  
-    }
+    };
   }
-
+  //make sure there's initial history - pulls the history.
   componentWillMount() {
     this.props.fetchLyftHistory();
-  };
-
-  // componentDidMount() {
-  //   const DirectionsService = new google.maps.DirectionsService();
-    
-  //   DirectionsService.route({
-  //     origin: this.state.origin,
-  //     destination: this.state.destination,
-  //     travelMode: google.maps.TravelMode.DRIVING,
-  //   }, (result, status) => {
-  //     console.log("RESULTTTTT", result)
-  //     if (status === google.maps.DirectionsStatus.OK) {
-  //       this.setState({
-  //         directions: result,
-  //       });
-  //     } else {
-  //       console.error(`error fetching directions ${result}`);
-  //     }
-  //   });
-
-  // }
-
-  // onHistorySelect(selectedHistory) {
-  //   this.props.selectHistory(selectedHistory);
-  // }; 
+  }
 
   onValueSelect(selectedValue) { 
     this.props.selectHistory(this.props.history[selectedValue]);
   }
-
   // // toggleCollapse(state) {
   // //   console.log("state", state)
   // //   console.log("props", this.props)
@@ -103,20 +75,7 @@ class BigContainer extends Component {
       lat: 37.7749,
       lng: -122.4194,
     };
-
   }
-
-//   getDirections() {
-//   if (!this.props.selectedHistory) {
-//     return this.state.directions;
-//   }
-
-//   console.log("SELECT HIST", this.props.selectedHistory)
-//   this.state.origin = new google.maps.LatLng(this.props.selectedHistory.origin_lat, this.props.selectedHistory.origin_lng)
-//   this.state.destination = new google.maps.LatLng(this.props.selectedHistory.dropoff_lat, this.props.selectedHistory.dropoff_lng)
-  
-//   return this.state.directions;
-// }
 
   // <div className="charts">
   //   <Button onClick={()=> this.toggleCollapse(!this.props.open)}>
@@ -181,7 +140,7 @@ class BigContainer extends Component {
           history={this.props.history}
           onValueSelect={selectedValue => this.onValueSelect(selectedValue)}
         />
-      )
+      );
     }
     return (
       <div> loading.. </div>
@@ -192,13 +151,12 @@ class BigContainer extends Component {
     const data = this.props.selectedHistory;
     
     if (data) {
-    const DirectionsService = new google.maps.DirectionsService();
-    
-    DirectionsService.route({
-      origin: this.props.marker.originLatLng,
-      destination: this.props.marker.dropoffLatLng,
-      travelMode: google.maps.TravelMode.DRIVING,
-    }, (result, status) => {
+      const DirectionsService = new google.maps.DirectionsService();
+      DirectionsService.route({
+        origin: this.props.marker.originLatLng,
+        destination: this.props.marker.dropoffLatLng,
+        travelMode: google.maps.TravelMode.DRIVING,
+      }, (result, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.setState({
           directions: result,
@@ -206,25 +164,22 @@ class BigContainer extends Component {
       } else {
         console.error(`error fetching directions ${result}`);
       }
-    });
-  } 
+      });
+    } 
 
-  return this.state.directions;
-}
+    return this.state.directions;
+  }
     
-
-
-
   render() {
     return (
       <div className="bigContainer">
         <div className="mainMap">
           <SimpleMap
             containerElement={
-              <div style={{ height: `100%` }} />
+              <div style={{ height: '100%' }} />
             }
             mapElement={
-              <div style={{ height: `100%` }} />
+              <div style={{ height: '100%' }} />
             }
             center={this.setCenter()}
             markers={this.markerArray()}
@@ -235,10 +190,10 @@ class BigContainer extends Component {
         {this.mainSlider()}
         </div>
         <div className="displayBar">
-        <DisplayBar 
-          selectedHistory={this.props.selectedHistory}
-          history={this.props.history}
-        /> 
+          <DisplayBar 
+            selectedHistory={this.props.selectedHistory}
+            history={this.props.history}
+          /> 
         </div>
       </div>
     );

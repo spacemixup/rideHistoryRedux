@@ -9,7 +9,7 @@ const DisplayBar = (props) => {
       <div> loading..</div>
     )
   } 
-
+  
   const data = props.selectedHistory;
   
   return (
@@ -26,11 +26,11 @@ const DisplayBar = (props) => {
       <div>
         {data.dropoff_loc}
       </div>
-      <div>
+      <div className="displayBar-ride_cost">
         {convertToDollar(data.ride_cost)}
       </div>
     </div>
-  )
+  );
 };
 
 export default DisplayBar;

@@ -39,24 +39,22 @@ componentDidMount() {
     // d3.slider().scale(d3.time.scale().domain([new Date(firstRide), new Date(lastRide)])).axis(d3.svg.axis().ticks(15).tickFormat(d3.time.format("%b %Y")))
     //correctly spits out date
     // d3.slider().scale(d3.time.scale().domain([new Date(firstRide), new Date(lastRide)]).nice()).axis(d3.svg.axis() ).snap(true).value(new Date(2000,1,1))
-    
-
-    d3.slider().axis(true).min(0).max(data.length).step(1)
-
-     .on('slide', (evt, value) => { 
-      d3.select('#slidertext').text(value); 
-      this.props.onValueSelect(value);
-    })
+    d3.slider().axis(true).min(0).max(data.length)
+      .step(1)
+      .on('slide', (evt, value) => {
+        d3.select('#slidertext').text(value);
+        this.props.onValueSelect(value);
+      })
   );
 }
 
-  render () {
+  render() {
     return (
-      <div> 
+      <div className="sliderArea"> 
         <div id="slidertext">0</div>
         <div id="slider1"></div>
       </div>
-    )
+    );
   }
 }
 export default MainSlider;

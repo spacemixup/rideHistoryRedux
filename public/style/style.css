@@ -15,14 +15,15 @@ table {
   margin:auto;
   display:block;
 }
-/*
-.rideDate td {
-  column-width: 40px;
-}*/
 
-.mainSlider {
+
+.sliderArea {
   width: 100%;
   display:block;
+}
+
+.sliderText {
+
 }
 
 .displayBar {
