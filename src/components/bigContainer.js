@@ -131,7 +131,6 @@ class BigContainer extends Component {
   //   markers={this.markerArray()}
   // />
 
-
   mainSlider() {
     const data = this.props.history;
     if (data[0]) {
@@ -173,27 +172,29 @@ class BigContainer extends Component {
   render() {
     return (
       <div className="bigContainer">
-        <div className="mainMap">
-          <SimpleMap
-            containerElement={
-              <div style={{ height: '100%' }} />
-            }
-            mapElement={
-              <div style={{ height: '100%' }} />
-            }
-            center={this.setCenter()}
-            markers={this.markerArray()}
-            directions={this.getDirections()}
-          />
-        </div>
-        <div className="mainSlider"> 
-        {this.mainSlider()}
-        </div>
-        <div className="displayBar">
-          <DisplayBar 
+        <div className="leftSide"> 
+          <div className="mainMap">
+            <SimpleMap
+              containerElement={
+                <div style={{ height: '100%' }} />
+              }
+              mapElement={
+                <div style={{ height: '100%' }} />
+              }
+              center={this.setCenter()}
+              markers={this.markerArray()}
+              directions={this.getDirections()}
+            />
+         </div>
+         <div className="mainSlider"> 
+           {this.mainSlider()}
+         </div>
+         <div className="displayBar">
+           <DisplayBar 
             selectedHistory={this.props.selectedHistory}
             history={this.props.history}
-          /> 
+           /> 
+         </div>
         </div>
       </div>
     );

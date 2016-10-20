@@ -1,9 +1,21 @@
-table {
-  table-layout: fixed;
- } 
+.leftSide {
+  border: 1px solid black; 
+  width: 90%;
+  height: 620px;
+}
 
-.divContainer {
-  display: inline-block;
+.displaybarInfo {
+  border: 1px solid green;
+  display : inline-block;
+  width: 100%;
+  vertical-align: top;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.displayBarItem {
+  border: 1px solid blue;
+  width: fit-content;
+  display : inline-block;
 }
 
 .rideDivs {
@@ -14,6 +26,17 @@ table {
 .driverPic img {
   margin:auto;
   display:block;
+  height: 100%;
+}
+
+.ride_cost, .ride_length {
+  font-size: 75px;
+}
+
+.ride_cost {
+}
+
+.ride_length {
 }
 
 
@@ -27,20 +50,19 @@ table {
 }
 
 .displayBar {
-  margin-top: 50px;
+  /*margin-top: 50px;*/
   width: 100%;
   display:block;
 }
 
-.bigContainer {
+/*.bigContainer {
   height: 620px;
-}
+}*/
 
 .mainMap {
-  display: inline-block;
   border: 1px solid red;
   width: 100%;
-  height: 50%;
+  height: 55%;
   vertical-align: top;
 }
 

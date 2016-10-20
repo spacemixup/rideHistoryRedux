@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 const DisplayBar = (props) => {
    
@@ -9,25 +10,31 @@ const DisplayBar = (props) => {
       <div> loading..</div>
     )
   } 
-  
+
   const data = props.selectedHistory;
+  const pickupTime = moment(data.pickup_time);
+  const dropOffTime = moment(data.dropoff_time);
   
   return (
     <div className="displaybarInfo">
-      <div>
-      {data.driver}
+     
+      <div className='driverPicDiv'>
+        <img className='driverPic' src={data.driver_image} height='100px' width='160px'/>
+      </div> 
+      <div className='displayBarItem driver'>
+        Driver:{data.driver}
       </div>
-      <div>
-      <img className='driverPic' src={data.driver_image} height='15%' width='15%'/>
+      <div className='displayBarItem pickup_loc'>
+        Pick Up:{data.pickup_loc}
       </div>
-      <div>
-      {data.pickup_loc}
+      <div className='displayBarItem dropoff_loc'>
+        Drop Off:{data.dropoff_loc}
       </div>
-      <div>
-        {data.dropoff_loc}
-      </div>
-      <div className="displayBar-ride_cost">
+      <div className='displayBarItem ride_cost'>
         {convertToDollar(data.ride_cost)}
+      </div>
+      <div className="displayBarItem ride_length">
+        {dropOffTime.diff(pickupTime, 'minutes')} minutes
       </div>
     </div>
   );
